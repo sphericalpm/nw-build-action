@@ -8,6 +8,9 @@ inputs:
   index:
     description: Python package index with extra packages
     required: true
+  cert-pass:
+    description: Certificate password
+    required: true
 runs:
   using: composite
   steps:
@@ -45,5 +48,5 @@ runs:
         PIP_EXTRA_INDEX_URL: '${{ inputs.index }}'
       run: |
         echo "Building ${{ inputs.app }}"
-        nw build -p ${{ inputs.app }}
+        nw build -p ${{ inputs.app }} -c "${{ inputs.cert-pass }}"
       shell: pwsh
