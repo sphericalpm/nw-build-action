@@ -5,6 +5,9 @@ inputs:
   app:
     description: Package name of the app to build
     required: true
+  index:
+    description: Python package index with extra packages
+    required: true
 runs:
   using: composite
   steps:
@@ -34,10 +37,14 @@ runs:
       shell: pwsh
 
     - name: Install nw-builder
+      env:
+        PIP_EXTRA_INDEX_URL: '${{ inputs.index }}'
       run: pip install nw-builder
       shell: pwsh
 
     - name: Build the target app
+      env:
+        PIP_EXTRA_INDEX_URL: '${{ inputs.index }}'
       run: |
         echo "Building ${{ inputs.app }}"
         nw build -p ${{ inputs.app }}
