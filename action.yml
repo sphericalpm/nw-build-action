@@ -11,6 +11,10 @@ inputs:
   cert-pass:
     description: Certificate password
     required: true
+outputs:
+  target-file:
+    description: Build result file
+    value: ${{ steps.build-target.outputs.target-file }}
 runs:
   using: composite
   steps:
@@ -49,4 +53,10 @@ runs:
       run: |
         echo "Building ${{ inputs.app }}"
         nw build -p ${{ inputs.app }} -c "${{ inputs.cert-pass }}"
+      shell: pwsh
+
+    - name: Build target
+      id: build-target
+      run: |
+        echo "::set-output name=target-file::$(Get-ChildItem -Path *.exe -Name)"
       shell: pwsh
