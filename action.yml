@@ -38,7 +38,7 @@ runs:
     - name: Install python prerequisites
       run: |
         pip install wheel
-        python -m pip install pip==20.2.4
+        python -m pip install pip==20.3.4
       shell: pwsh
 
     - name: Install nw-builder
