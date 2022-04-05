@@ -5,6 +5,9 @@ inputs:
   app:
     description: Package name of the app to build
     required: true
+  plugins:
+    description: Requirements to add while packaging
+    required: false
   index:
     description: Python package index with extra packages
     required: true
@@ -51,9 +54,18 @@ runs:
       env:
         PIP_EXTRA_INDEX_URL: '${{ inputs.index }}'
       run: |
-        echo "Building ${{ inputs.app }}"
-        nw build -p ${{ inputs.app }} -c "${{ inputs.cert-pass }}"
-      shell: pwsh
+        import subprocess
+        print('Building ${{ inputs.app }}')
+        plugins = '${{ inputs.plugins }}'
+        if plugins:
+          plugins = ' '.join(('-l', *plugins.split()))
+        subprocess.check_call((
+          *'nw build -p'.split(),
+          '${{ inputs.app }}',
+          '-c', '${{ inputs.cert-pass }}',
+          *plugins.split(),
+        ))
+      shell: python
 
     - name: Build target
       id: build-target
