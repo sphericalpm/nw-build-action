@@ -38,13 +38,13 @@ runs:
     - name: Install python prerequisites
       run: |
         pip install wheel
-        python -m pip install pip==20.3.4
+        python -m pip install pip==20.3.4 'setuptools>=40.4.3,<61'
       shell: pwsh
 
     - name: Install nw-builder
       env:
         PIP_EXTRA_INDEX_URL: '${{ inputs.index }}'
-      run: pip install nw-builder
+      run: pip install --no-use-pep517 nw-builder
       shell: pwsh
 
     - name: Build the target app
